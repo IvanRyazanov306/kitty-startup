@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: kitty-backend
+    networks:
+      - kitty-net
+
+  frontend:
+    build: ./frontend
+    container_name: kitty-frontend
+    depends_on:
+      - backend
+    networks:
+      - kitty-net
+
+  nginx:
+    build: ./nginx
+    container_name: kitty-nginx
+    depends_on:
+      - frontend
+    ports:
+      - "80:80"
+    networks:
+      - kitty-net
+
+networks:
+  kitty-net:
+    driver: bridge
